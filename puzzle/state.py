@@ -25,7 +25,6 @@ def is_goal(state):
 
 
 def get_neighbors(state):
-    """Return a list of (move_name, new_state) reachable by sliding the blank."""
     blank = state.index(0)
     row, col = divmod(blank, SIZE)
     result = []
@@ -40,7 +39,6 @@ def get_neighbors(state):
 
 
 def is_solvable(state):
-    """For a 3x3 board, solvable iff the inversion count (ignoring 0) is even."""
     tiles = [t for t in state if t != 0]
     inversions = sum(
         1 for i in range(len(tiles)) for j in range(i + 1, len(tiles)) if tiles[i] > tiles[j]
@@ -49,7 +47,6 @@ def is_solvable(state):
 
 
 def random_state(seed=None):
-    """Random SOLVABLE state."""
     rng = random.Random(seed)
     while True:
         tiles = list(range(SIZE * SIZE))

@@ -14,10 +14,7 @@ class SearchResult:
 
 
 def reconstruct(parents, goal_state):
-    """Walk a parent map {state: (parent_state, move)} back to the root.
 
-    Returns (moves, states) from initial to goal. The root maps to (None, None).
-    """
     moves, states = [], [goal_state]
     cur = goal_state
     while parents[cur][0] is not None:
