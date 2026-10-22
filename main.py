@@ -4,16 +4,16 @@ import time
 from puzzle.state import parse_state, random_state, is_solvable
 from puzzle.bfs import bfs
 from puzzle.dfs import dfs
-# from puzzle.ids import ids        # Member 2: uncomment when IDS is done
-# from puzzle.astar import astar    # Member 2: uncomment when A* is done
+from puzzle.ids import ids
+from puzzle.astar import astar
 from puzzle.visualize import print_solution
 
 ALGORITHMS = {
     "bfs": bfs,
     "dfs": dfs,
-    # "ids": ids,                                          # Member 2
-    # "astar-manhattan": lambda s: astar(s, "manhattan"),  # Member 2
-    # "astar-euclidean": lambda s: astar(s, "euclidean"),  # Member 2
+    "ids": ids,
+    "astar-manhattan": lambda s: astar(s, "manhattan"),
+    "astar-euclidean": lambda s: astar(s, "euclidean"),
 }
 
 
@@ -36,14 +36,21 @@ def main():
     p.add_argument("--no-trace", action="store_true", help="skip step-by-step boards")
     p.add_argument("--max-steps", type=int, default=None,
                    help="only show first/last N steps of long paths")
+    p.add_argument("--gui", action="store_true", help="open the graphical interface")
+    p.add_argument("--port", type=int, default=8080, help="GUI port (default 8080)")
     args = p.parse_args()
+
+    if args.gui:
+        from gui import serve
+        serve(args.port)
+        return
 
     if args.state:
         initial = parse_state(args.state)
     elif args.random:
         initial = random_state(args.seed)
     else:
-        p.error("provide --state or --random")
+        p.error("provide --state or --random (or --gui)")
 
     if not is_solvable(initial):
         print(f"State {initial} is NOT solvable (odd inversion count).")
